@@ -1,10 +1,12 @@
 use warnings;
 use strict;
+use Data::Dumper;
 use v5.10;
 
 sub loadInput
 {
 	my $filename = $_[0];
+		if(!defined $filename){ die "Please select a file for your inputs.\n\t"; }
 	my @inputs = ();
 	
 	open(my $fh, '<', $filename);
@@ -20,7 +22,15 @@ sub loadInput
 
 sub debug
 {
-	say "DEBUG: $_[0]";
+	my $debugMessage = $_[0];
+	my $printLine = $_[1];
+	
+	say "DEBUG: $debugMessage";
+	if($printLine)
+	{
+		my (undef, undef, $line) = caller;
+		say "\tAt line: $line";
+	}
 }
 
 1;
