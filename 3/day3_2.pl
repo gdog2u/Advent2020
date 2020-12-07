@@ -1,19 +1,10 @@
 use warnings;
 use strict;
+use Data::Dumper;
 require '../global.pl';
 
 my @inputs = loadInput($ARGV[0]);
-# Validate input
-my $rise = $ARGV[1];
-	if(!defined $rise || $rise !~ /^[0-9]+$/)
-	{
-		die "Please enter a rise integer";
-	}
-my $run = $ARGV[2];
-	if(!defined $run || $run !~ /^[0-9]+$/)
-	{
-		die "Please enter a run integer";
-	}
+my @slopes = loadInput($ARGV[1]);
 
 # Parse the map
 our @map = ();
@@ -25,8 +16,24 @@ foreach my $rowText (@inputs)
 	push(@map, \@row);
 }
 
-my $treesEncountered = getTreesEncountered($rise, $run);
-debug("Trees encountered: $treesEncountered");
+for(my $i = 0; $i < scalar @slopes; $i++)
+{
+	$slopes[$i] =~ /(\d+),(\d+)/;
+	$slopes[$i] = [$1, $2];
+}
+
+my $productOfTreesEncountered = 1;
+foreach my $slope (@slopes)
+{
+	# debug("Rise: $slope->[0]");
+	# debug("Run:  $slope->[1]");
+
+	my $treesEncountered = getTreesEncountered($slope->[0], $slope->[1]);
+	# debug("Trees encountered: $treesEncountered");
+	$productOfTreesEncountered *= $treesEncountered;
+}
+
+debug("Product: $productOfTreesEncountered");
 
 # Step through map
 sub getTreesEncountered
