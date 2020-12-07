@@ -9,8 +9,6 @@ my @passports = loadInput($ARGV[0]);
 my $validPassports = 0;
 foreach my $passport (@passports)
 {
-	# This is off by one for some reason
-	# Proceed with caution
 	if(passportIsValid($passport))
 	{
 		$validPassports++;
@@ -45,6 +43,8 @@ sub loadInput
 			$passport->{$key} = $value;
 		}
 	}
+
+	push(@return, $passport);
 
 	return @return;
 }
