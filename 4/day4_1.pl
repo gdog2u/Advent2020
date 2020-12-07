@@ -9,6 +9,8 @@ my @passports = loadInput($ARGV[0]);
 my $validPassports = 0;
 foreach my $passport (@passports)
 {
+	# This is off by one for some reason
+	# Proceed with caution
 	if(passportIsValid($passport))
 	{
 		$validPassports++;
@@ -49,7 +51,7 @@ sub loadInput
 
 sub passportIsValid
 {
-	state @validKeys = (
+	my @validKeys = (
 		'byr',
 		'iyr',
 		'eyr',
@@ -61,11 +63,12 @@ sub passportIsValid
 	);
 	my @keys = keys %{ $_[0] };
 
-	if(!array_diff(\@validKeys, \@keys))
+	my @diff = array_diff(@validKeys, @keys);
+	if(!@diff)
 	{
 		return 1;
 	}
-	elsif((scalar array_diff(\@validKeys, \@keys)) == 1 && !grep(/^cid$/, @keys))
+	elsif((scalar @diff) == 1 && !grep(/^cid$/, @keys))
 	{
 		return 1;
 	}
